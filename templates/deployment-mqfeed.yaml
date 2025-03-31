@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mq-feed-deployment
+  namespace: mq-client-apps
+  labels:
+    app: mqfeed-app
+spec:
+  replicas: {{ .Values.mqFeedDeployment.replicaCount }}
+  selector:
+    matchLabels:
+      app: mqfeed-app
+  template:
+    metadata:
+      labels:
+        app: mqfeed-app
+    spec:
+      containers:
+      - name: mqfeed-app
+        image: "{{ .Values.mqFeedDeployment.image.repository }}:{{ .Values.mqFeedDeployment.image.tag }}"
+        env:
+        - name: HOST_NAME
+          value: "{{ .Values.queueManagerHostName }}"
+        - name: QUEUE_MANAGER_PORT_NUMBER
+          value: "{{ .Values.queueManagerPortNumber }}"
+        - name: QUEUE_MANAGER_NAME
+          value: "{{ .Values.queueManagerName }}"       
+        - name: CHANNEL_NAME
+          value: "{{ .Values.channelName }}"
+        - name: QUEUE_NAME
+          value: "{{ .Values.queueName }}"                                       

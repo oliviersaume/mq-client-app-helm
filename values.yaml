@@ -1,0 +1,21 @@
+# Default values for mq-client-app-helm.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+queueManagerHostName: "192.168.1.52"
+queueManagerPortNumber: "1515"
+queueManagerName: "QMGRA"
+channelName: "MQCONSUMER"
+queueName: "mqConsumer001"
+
+mqConsumeDeployment:
+  replicaCount: 1
+  image:
+    repository: "osaume/python-mq-app-consume"
+    tag: "latest"
+
+mqFeedDeployment:
+  replicaCount: 1
+  image:
+    repository: "osaume/python-mq-app-feed"
+    tag: "latest"

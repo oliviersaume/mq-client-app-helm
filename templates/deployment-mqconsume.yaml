@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mq-consume-deployment
+  namespace: mq-client-apps
+  labels:
+    app: mqconsume-app
+spec:
+  replicas: {{ .Values.mqConsumeDeployment.replicaCount }}
+  selector:
+    matchLabels:
+      app: mqconsume-app
+  template:
+    metadata:
+      labels:
+        app: mqconsume-app
+    spec:
+      containers:
+      - name: mqconsume-app
+        image: "{{ .Values.mqConsumeDeployment.image.repository }}:{{ .Values.mqConsumeDeployment.image.tag }}"
+        env:
+        - name: HOST_NAME
+          value: "{{ .Values.queueManagerHostName }}"
+        - name: QUEUE_MANAGER_PORT_NUMBER
+          value: "{{ .Values.queueManagerPortNumber }}"
+        - name: QUEUE_MANAGER_NAME
+          value: "{{ .Values.queueManagerName }}"       
+        - name: CHANNEL_NAME
+          value: "{{ .Values.channelName }}"
+        - name: QUEUE_NAME
+          value: "{{ .Values.queueName }}"                                      
